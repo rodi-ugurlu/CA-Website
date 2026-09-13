@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react'
 import './App.css'
 
 const SITE = {
@@ -56,15 +56,39 @@ function App() {
   const [showAll, setShowAll] = useState(false)
   const [activeImage, setActiveImage] = useState<number | null>(null)
   const [showMobileContact, setShowMobileContact] = useState(false)
+  const [isLocating, setIsLocating] = useState(false)
 
   const whatsappHref = useMemo(() => {
     if (!SITE.whatsappNumber) return '#contact'
-    const message = encodeURIComponent(`Merhaba ${SITE.name}, yol yardım hizmeti almak istiyorum. Konumum:`)
+    const message = encodeURIComponent(`Merhaba ${SITE.name}, yol yardım hizmeti almak istiyorum. Konumumu WhatsApp üzerinden paylaşacağım.`)
     return `https://wa.me/${SITE.whatsappNumber}?text=${message}`
   }, [])
 
   const phoneHref = SITE.phoneHref
   const visibleImages = showAll ? images : images.slice(0, 6)
+
+  const handleLocationShare = (event: ReactMouseEvent<HTMLAnchorElement>) => {
+    if (!navigator.geolocation || isLocating) return
+
+    event.preventDefault()
+    setIsLocating(true)
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        const latitude = coords.latitude.toFixed(6)
+        const longitude = coords.longitude.toFixed(6)
+        const locationUrl = `https://www.google.com/maps?q=${latitude},${longitude}`
+        const message = encodeURIComponent(
+          `Merhaba ${SITE.name}, yol yardım hizmeti almak istiyorum.\n\nKonumum: ${locationUrl}`,
+        )
+        window.location.assign(`https://wa.me/${SITE.whatsappNumber}?text=${message}`)
+      },
+      () => {
+        setIsLocating(false)
+        window.location.assign(whatsappHref)
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 },
+    )
+  }
 
   useEffect(() => {
     if (activeImage === null) return
@@ -125,7 +149,7 @@ function App() {
               <h1 id="hero-title">Yolda kaldığında<span>yanındayız.</span></h1>
               <p className="hero-description">Aracınızı bulunduğu noktadan güvenle alıyor, istediğiniz adrese hızlıca ulaştırıyoruz.</p>
               <div className="hero-actions">
-                <a className="button button-primary" href={whatsappHref} target="_blank" rel="noreferrer"><WhatsAppIcon size={21} />WhatsApp'tan konum gönder<ArrowIcon /></a>
+                <a className="button button-primary" href={whatsappHref} onClick={handleLocationShare} aria-busy={isLocating}><WhatsAppIcon size={21} />{isLocating ? 'Konum alınıyor…' : "WhatsApp'tan konum gönder"}<ArrowIcon /></a>
                 <a className="button button-ghost" href={phoneHref}><PhoneIcon size={20} />Hemen ara</a>
               </div>
             </div>
@@ -208,7 +232,7 @@ function App() {
             <div><p className="eyebrow">7/24 BİZE ULAŞIN</p><h2>Yolda kalmayın.<br /><span>Biz geliyoruz.</span></h2></div>
             <div className="contact-actions">
               <a className="contact-line" href={phoneHref}><span className="contact-icon"><PhoneIcon size={23} /></span><span><small>TELEFON</small><strong>{SITE.phoneDisplay}</strong></span><ArrowIcon /></a>
-              <a className="contact-line" href={whatsappHref} target="_blank" rel="noreferrer"><span className="contact-icon whatsapp"><WhatsAppIcon size={23} /></span><span><small>WHATSAPP</small><strong>Konumunu gönder</strong></span><ArrowIcon /></a>
+              <a className="contact-line" href={whatsappHref} onClick={handleLocationShare} aria-busy={isLocating}><span className="contact-icon whatsapp"><WhatsAppIcon size={23} /></span><span><small>WHATSAPP</small><strong>{isLocating ? 'Konum alınıyor…' : 'Konumunu gönder'}</strong></span><ArrowIcon /></a>
               <div className="always-open"><ClockIcon /> Haftanın 7 günü, 24 saat hizmetinizdeyiz.</div>
             </div>
           </div>
