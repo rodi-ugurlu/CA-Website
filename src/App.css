@@ -98,7 +98,7 @@
   mask-image: linear-gradient(to bottom, transparent 45%, black 100%);
 }
 
-.hero-content { position: relative; z-index: 2; }
+.hero-content { position: static; }
 
 .eyebrow { margin: 0 0 14px; color: var(--amber); font-size: 11px; font-weight: 850; letter-spacing: 2.35px; }
 
@@ -111,7 +111,7 @@
 .hero-content h1 { max-width: 720px; margin: 0; color: var(--white); font-size: clamp(48px, 13.4vw, 86px); line-height: .92; letter-spacing: -1.4px; text-wrap: balance; text-shadow: 0 4px 30px rgba(0,0,0,.45); }
 .hero-content h1 span { display: block; color: var(--amber); }
 .hero-description { max-width: 520px; margin: 20px 0 0; color: #d1d5da; font-size: 16px; line-height: 1.7; text-shadow: 0 2px 15px rgba(0,0,0,.7); }
-.hero-actions { display: grid; grid-template-columns: 1fr; gap: 9px; margin-top: 24px; }
+.hero-actions { position: absolute; z-index: 3; right: 20px; bottom: 28px; left: 20px; display: grid; grid-template-columns: 1fr; gap: 9px; margin: 0; }
 
 .button {
   min-height: 54px;
@@ -251,7 +251,8 @@
   .hero-overlay { background: linear-gradient(180deg, rgba(7,9,12,.7), rgba(7,9,12,.08) 42%, rgba(7,9,12,.9) 96%), linear-gradient(90deg, rgba(7,9,12,.72), rgba(7,9,12,.06) 72%); }
   .hero-content h1 { max-width: 760px; }
   .hero-description { font-size: 17px; }
-  .hero-actions { display: flex; }
+  .hero-content { position: relative; z-index: 2; }
+  .hero-actions { position: static; display: flex; margin-top: 24px; }
   .button { min-width: 190px; padding-inline: 23px; }
   .button-ghost { display: inline-flex; }
   .button-primary svg:last-child { display: block; margin-left: 10px; }
