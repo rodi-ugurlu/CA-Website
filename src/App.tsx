@@ -22,6 +22,49 @@ const images = Object.entries(imageModules)
   .sort(([pathA], [pathB]) => pathA.localeCompare(pathB, 'tr', { numeric: true }))
   .map(([, url]) => url)
 
+const galleryAlts = [
+  'Siyah otomobilin Yavuz Oto Kurtarma çekicisiyle güvenli taşınması',
+  'Mersin yol yardım hizmetinde çekici üzerindeki siyah otomobil',
+  'Arızalı siyah aracın oto kurtarma platformunda taşınması',
+  'Şehirler arası nakliye için çekiciye yüklenmiş siyah otomobil',
+  'Yol kenarından alınan otomobilin güvenli çekici hizmeti',
+  'Yavuz Oto Kurtarma aracıyla tamamlanan otomobil taşıması',
+  'Mersin çekici hizmetinde platforma sabitlenmiş siyah araç',
+  'Hafif ticari aracın oto kurtarma çekicisiyle nakliyesi',
+  'Şehir içi araç kurtarma çalışmasında taşınan otomobil',
+  'İki otomobil için gerçekleştirilen güvenli araç nakliyesi',
+  'Gece yol yardım görevi için hazır boş platformlu çekici',
+  'Türkiye geneli taşıma için çekiciye alınmış siyah otomobil',
+  'Profesyonel ekipmanla güvenli şekilde taşınan otomobil',
+  'Arazi aracının şehirler arası oto taşıma hizmeti',
+  'Beyaz otomobilin Yavuz Oto Kurtarma aracıyla taşınması',
+  'Beyaz SUV aracın çekici platformunda güvenli nakliyesi',
+]
+
+const galleryItems = images.map((url, index) => ({
+  url,
+  alt: galleryAlts[index] ?? `Yavuz Oto Kurtarma araç taşıma çalışması ${index + 1}`,
+}))
+
+const faqs = [
+  {
+    question: 'Mersin’de 7/24 çekici hizmeti veriyor musunuz?',
+    answer: 'Evet. Mersin ve Yenişehir merkezli olarak haftanın 7 günü, günün 24 saati oto kurtarma ve yol yardım taleplerine yanıt veriyoruz.',
+  },
+  {
+    question: 'Şehirler arası araç taşıma yapıyor musunuz?',
+    answer: 'Evet. Mersin’den Türkiye’nin 81 iline şehirler arası araç nakliyesi ve güvenli otomobil taşıma hizmeti sunuyoruz.',
+  },
+  {
+    question: 'Hangi durumlarda oto kurtarma hizmeti alabilirim?',
+    answer: 'Arıza, kaza veya aracın hareket edemediği diğer durumlarda çekici ve araç kurtarma hizmeti için bize ulaşabilirsiniz.',
+  },
+  {
+    question: 'Yol yardım talebi nasıl oluşturulur?',
+    answer: 'Bizi +90 553 550 41 47 numaralı telefondan arayabilir veya WhatsApp butonuyla bulunduğunuz konumu gönderebilirsiniz.',
+  },
+]
+
 const heroImage = Object.entries(imageModules).find(([path]) =>
   path.endsWith('WhatsApp Image 2026-09-13 at 01.48.44 (1).jpeg'),
 )?.[1] ?? images[0]
@@ -65,7 +108,7 @@ function App() {
   }, [])
 
   const phoneHref = SITE.phoneHref
-  const visibleImages = showAll ? images : images.slice(0, 6)
+  const visibleImages = showAll ? galleryItems : galleryItems.slice(0, 6)
 
   const handleLocationShare = (event: ReactMouseEvent<HTMLAnchorElement>) => {
     if (!navigator.geolocation || isLocating) return
@@ -132,7 +175,7 @@ function App() {
           <span className="brand-copy"><strong>{SITE.shortName}</strong><small>OTO KURTARMA</small></span>
         </a>
         <nav className="desktop-nav" aria-label="Ana menü">
-          <a href="#services">Hizmetler</a><a href="#work">Çalışmalar</a><a href="#location">Konum</a>
+          <a href="#services">Hizmetler</a><a href="#work">Çalışmalar</a><a href="#location">Konum</a><a href="#faq">SSS</a>
         </nav>
         <a className="top-call" href={phoneHref}><PhoneIcon size={18} /><span>Hemen Ara</span></a>
       </header>
@@ -168,17 +211,17 @@ function App() {
             <article className="service-card featured-service">
               <div className="service-number">01</div>
               <div className="service-icon" aria-hidden="true"><Icon size={34}><path d="M3 17h12l3-6h3v6M5 17l2-7h7l3 7" /><circle cx="7" cy="18" r="2" /><circle cx="19" cy="18" r="2" /><path d="M9 10V7h5l4 4" /></Icon></div>
-              <h3>Oto Kurtarma</h3><p>Kazalı veya hareket edemeyen aracınızı güvenle taşıyoruz.</p>
+              <h3>Oto Kurtarma</h3><p>Kazalı, arızalı veya hareket edemeyen aracınızı profesyonel çekiciyle güvenle taşıyoruz.</p>
             </article>
             <article className="service-card">
               <div className="service-number">02</div>
               <div className="service-icon" aria-hidden="true"><Icon size={31}><path d="M14.7 6.3a4 4 0 0 0-5-5L7.8 3.2l3 3-4.6 4.6-3-3-1.9 1.9a4 4 0 0 0 5 5l7.5 7.5a2 2 0 0 0 2.8-2.8l-7.5-7.5" /><path d="m16 8 4-4M18 2l4 4" /></Icon></div>
-              <h3>Yol Yardım</h3><p>Beklenmedik arızalarda bulunduğunuz noktaya hızlı destek.</p>
+              <h3>7/24 Yol Yardım</h3><p>Mersin ve Yenişehir’de beklenmedik arızalarda bulunduğunuz noktaya hızlı destek.</p>
             </article>
             <article className="service-card">
               <div className="service-number">03</div>
               <div className="service-icon" aria-hidden="true"><Icon size={31}><path d="M3 16h18M5 16V9l3-4h8l3 4v7" /><circle cx="7" cy="17" r="2" /><circle cx="17" cy="17" r="2" /><path d="M8 9h8" /></Icon></div>
-              <h3>Araç Nakliyesi</h3><p>Türkiye'nin 81 iline profesyonel araç transferi.</p>
+              <h3>Şehirler Arası Araç Nakliyesi</h3><p>Mersin’den Türkiye'nin 81 iline güvenli otomobil ve araç taşıma hizmeti.</p>
             </article>
           </div>
         </section>
@@ -191,8 +234,8 @@ function App() {
             </div>
             <div className="gallery-grid">
               {visibleImages.map((image, index) => (
-                <button className={`gallery-item gallery-item-${index + 1}`} type="button" key={image} onClick={() => setActiveImage(index)} aria-label={`${index + 1}. çalışmayı büyüt`}>
-                  <img src={image} alt={`Yavuz Oto Kurtarma saha çalışması ${index + 1}`} loading="lazy" />
+                <button className={`gallery-item gallery-item-${index + 1}`} type="button" key={image.url} onClick={() => setActiveImage(index)} aria-label={`${image.alt} görselini büyüt`}>
+                  <img src={image.url} alt={image.alt} loading="lazy" decoding="async" />
                   <span className="gallery-zoom">+</span><span className="gallery-label">ÇALIŞMA #{String(index + 1).padStart(2, '0')}</span>
                 </button>
               ))}
@@ -219,10 +262,26 @@ function App() {
             <div className="location-card">
               <div className="pin-box"><PinIcon size={24} /></div>
               <p className="eyebrow">HİZMET NOKTAMIZ</p><h2>{SITE.location}</h2>
-              <p className="location-address">{SITE.address}</p>
+              <address className="location-address">{SITE.address}</address>
               <p className="location-note">Buradan Türkiye'nin 81 iline hizmet veriyoruz.</p>
               <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE.mapQuery)}`} target="_blank" rel="noreferrer">Haritada görüntüle <ArrowIcon /></a>
             </div>
+          </div>
+        </section>
+
+        <section className="faq-section section page-width" id="faq" aria-labelledby="faq-title">
+          <div className="faq-intro">
+            <p className="eyebrow">SIK SORULAN SORULAR</p>
+            <h2 id="faq-title">Yola çıkmadan<br />merak edilenler.</h2>
+            <p>Mersin oto kurtarma, 7/24 yol yardım ve Türkiye geneli araç nakliyesi hizmetlerimiz hakkında kısa yanıtlar.</p>
+          </div>
+          <div className="faq-list">
+            {faqs.map(({ question, answer }, index) => (
+              <details key={question} open={index === 0}>
+                <summary><span>{String(index + 1).padStart(2, '0')}</span>{question}</summary>
+                <p>{answer}</p>
+              </details>
+            ))}
           </div>
         </section>
 
@@ -254,7 +313,7 @@ function App() {
         <div className="lightbox" role="dialog" aria-modal="true" aria-label="Çalışma görseli">
           <button className="lightbox-close" type="button" onClick={() => setActiveImage(null)} aria-label="Galeriyi kapat">×</button>
           <button className="lightbox-arrow lightbox-prev" type="button" onClick={() => setActiveImage((activeImage - 1 + images.length) % images.length)} aria-label="Önceki görsel">‹</button>
-          <img src={images[activeImage]} alt={`Büyütülmüş saha çalışması ${activeImage + 1}`} />
+          <img src={galleryItems[activeImage].url} alt={galleryItems[activeImage].alt} />
           <button className="lightbox-arrow lightbox-next" type="button" onClick={() => setActiveImage((activeImage + 1) % images.length)} aria-label="Sonraki görsel">›</button>
           <span className="lightbox-count">{activeImage + 1} / {images.length}</span>
         </div>
